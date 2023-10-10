@@ -43,6 +43,26 @@
 						}
 					}).addTo(map);
 				});
+
+				fetch(
+				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/nycLimits.geojson'
+			)
+				.then(response => response.json())
+				.then(data => {
+					L.geoJSON(data, {
+						style: {
+							pane: 'pane_Limits',
+							opacity: 1,
+							color: 'rgba(188,35,35,1.0)',
+							dashArray: '',
+							lineCap: 'square',
+							lineJoin: 'bevel',
+							weight: 5.0,
+							fillOpacity: 1,
+							interactive: false
+						}
+					}).addTo(map);
+				});
 		}
 	});
 
