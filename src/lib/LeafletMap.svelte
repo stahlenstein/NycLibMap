@@ -2,7 +2,6 @@
 	// add imports //
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
-	import nycLimit from '';
 
 	let mapElement;
 	let map;
@@ -22,22 +21,24 @@
 					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 
+			map.createPane('pane_Limits');
+
 			// Load and display your JSON file using Leaflet.js
 			fetch(
-				'https://raw.githubusercontent.com/Main-FCWD/FloydWebMap/main/static/Data/FloydBorder.json'
+				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/nycLimit.json'
 			)
 				.then((response) => response.json())
 				.then((data) => {
 					L.geoJSON(data, {
 						style: {
-							pane: 'pane_FloydBorder',
+							pane:'pane_Limits',
 							opacity: 1,
-							color: 'rgba(188,35,35,1.0)',
+							color: 'rgba(19,19,19,0.75)',
 							dashArray: '',
 							lineCap: 'square',
 							lineJoin: 'bevel',
 							weight: 5.0,
-							fillOpacity: 0,
+							fillOpacity: 1,
 							interactive: false
 						}
 					}).addTo(map);
