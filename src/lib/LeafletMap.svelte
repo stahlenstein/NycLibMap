@@ -27,21 +27,9 @@
 			fetch(
 				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/nycLimit.json'
 			)
-				.then((response) => response.json())
-				.then((data) => {
-					L.geoJSON(data, {
-						style: {
-							pane:'pane_Limits',
-							opacity: 1,
-							color: 'rgba(19,19,19,0.75)',
-							dashArray: '',
-							lineCap: 'square',
-							lineJoin: 'bevel',
-							weight: 5.0,
-							fillOpacity: 1,
-							interactive: false
-						}
-					}).addTo(map);
+				.then(response => response.json())
+				.then(data => {
+					L.geoJSON(data).addTo(map);
 				});
 		}
 	});
