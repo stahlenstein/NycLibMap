@@ -5,7 +5,10 @@
 
 	let mapElement;
 	let map;
-	const libData = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
+	const libData =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
+	const libIcon =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/building.svg';
 
 	onMount(async () => {
 		if (browser) {
@@ -17,65 +20,65 @@
 				11
 			);
 
-			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution:
 					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 
 			map.createPane('pane_Limits');
 
-			function style(feature) {
-				return {
-					fillColor: "#000000",
-					weight: 1,
-					opacity: 1,
-					color: "#ffffff",
-					fillOpacity: 0.5
-				};
-			}
+			// function style(feature) {
+			// 	return {
+			// 		fillColor: "#000000",
+			// 		weight: 1,
+			// 		opacity: 1,
+			// 		color: "#ffffff",
+			// 		fillOpacity: 0.5
+			// 	};
+			// }
 
-			function onEachFeature(feature, layer) {
-				L.tooltip([feature.geometry.coordinates[0],feature.geometry.coordinates[1]], {
-					content: feature.properties.name,
-					permanent: false,
-					direction: Auto,
-					offset: [10, 0]
-				});
-				// L.icon({
-				// 	iconUrl: 
-				// })
-			};
+			// function onEachFeature(feature) {
+			// 	L.tooltip([feature.geometry.coordinates[0],feature.geometry.coordinates[1]], {
+			// 		content: feature.properties.name,
+			// 		permanent: false,
+			// 		direction: 'auto',
+			// 		offset: [10, 0]
+			// 	});
+			// 	console.log(feature.properties.name);
 
+			// 	L.icon({
+			// 		iconUrl: libIcon,
+			// 		iconSize: [15, 15]
+			// 	});
+			// };
 
 			// Load and display your JSON file using Leaflet.js
-				fetch(libData)
-				.then(response => response.json())
-				.then(data => {
-					L.geoJSON(data, {
-						style: style,
-						onEachFeature: onEachFeature
-					})
-					.addTo(map);
+			fetch(libData)
+				.then((response) => response.json())
+				.then((data) => {
+					// replace Leaflet's default blue marker with a custom icon
+					function addLibIcon(feature, latlng) {
+						let myIcon = L.icon({
+							iconUrl: libIcon,
+							iconSize: [25, 25], // width and height of the image in pixels
+							iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
+							
+						});
+						return L.marker(latlng, { icon: myIcon });
+					}
+
+					// create an options object that specifies which function will called on each feature
+					let layerOptions = {
+						pointToLayer: addLibIcon
+					};
+
+					L.geoJSON(data, layerOptions)
+						.bindPopup(function (osmLayer) {
+							return osmLayer.feature.properties.name;
+						})
+						.addTo(map);
 					console.log(data);
 				});
-
-
-
-				var tooltip = L.tooltip([meter.GPS.Latitude, meter.GPS.Longitude], {
-						content: meter.GPS.Address,
-						permanent: false,
-						direction: 'auto',
-						offset: [10, 0]
-					});
-
-				const markerIcon = L.icon({
-						iconUrl: `https://raw.githubusercontent.com/Main-FCWD/FloydWebMap/main/static/Data/markers/rt${GPSRoute}.svg`,
-						iconSize: [25, 25] // Adjust the size according to your marker images
-					});
-
-				const marker = L.marker([meter.GPS.Latitude, meter.GPS.Longitude], { icon: markerIcon })
-						.bindTooltip(tooltip)
-						.openTooltip();
 		}
 	});
 
