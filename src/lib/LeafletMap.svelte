@@ -27,31 +27,6 @@
 
 			map.createPane('pane_Limits');
 
-			// function style(feature) {
-			// 	return {
-			// 		fillColor: "#000000",
-			// 		weight: 1,
-			// 		opacity: 1,
-			// 		color: "#ffffff",
-			// 		fillOpacity: 0.5
-			// 	};
-			// }
-
-			// function onEachFeature(feature) {
-			// 	L.tooltip([feature.geometry.coordinates[0],feature.geometry.coordinates[1]], {
-			// 		content: feature.properties.name,
-			// 		permanent: false,
-			// 		direction: 'auto',
-			// 		offset: [10, 0]
-			// 	});
-			// 	console.log(feature.properties.name);
-
-			// 	L.icon({
-			// 		iconUrl: libIcon,
-			// 		iconSize: [15, 15]
-			// 	});
-			// };
-
 			// Load and display your JSON file using Leaflet.js
 			fetch(libData)
 				.then((response) => response.json())
