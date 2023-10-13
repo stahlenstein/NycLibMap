@@ -5,6 +5,7 @@
 
 	let mapElement;
 	let map;
+	const libData = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
 
 	onMount(async () => {
 		if (browser) {
@@ -23,39 +24,58 @@
 
 			map.createPane('pane_Limits');
 
+			function style(feature) {
+				return {
+					fillColor: "#000000",
+					weight: 1,
+					opacity: 1,
+					color: "#ffffff",
+					fillOpacity: 0.5
+				};
+			}
+
+			function onEachFeature(feature, layer) {
+				L.tooltip([feature.geometry.coordinates[0],feature.geometry.coordinates[1]], {
+					content: feature.properties.name,
+					permanent: false,
+					direction: Auto,
+					offset: [10, 0]
+				});
+				// L.icon({
+				// 	iconUrl: 
+				// })
+			};
+
+
 			// Load and display your JSON file using Leaflet.js
-			fetch(
-				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/nycLimits.geojson'
-			)
+				fetch(libData)
 				.then(response => response.json())
 				.then(data => {
 					L.geoJSON(data, {
-						style: {
-							pane: 'pane_Limits',
-							opacity: 1,
-							color: 'rgba(188,35,35,1.0)',
-							dashArray: '',
-							lineCap: 'square',
-							lineJoin: 'bevel',
-							weight: 5.0,
-							fillOpacity: 1,
-							interactive: false
-						}
-					}).addTo(map);
+						style: style,
+						onEachFeature: onEachFeature
+					})
+					.addTo(map);
+					console.log(data);
 				});
 
-				fetch(
-				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson'
-			)
-				.then(response => response.json())
-				.then(data => {
-					L.geoJSON(data).addTo(map);
-				});
+
+
+				var tooltip = L.tooltip([meter.GPS.Latitude, meter.GPS.Longitude], {
+						content: meter.GPS.Address,
+						permanent: false,
+						direction: 'auto',
+						offset: [10, 0]
+					});
 
 				const markerIcon = L.icon({
 						iconUrl: `https://raw.githubusercontent.com/Main-FCWD/FloydWebMap/main/static/Data/markers/rt${GPSRoute}.svg`,
 						iconSize: [25, 25] // Adjust the size according to your marker images
 					});
+
+				const marker = L.marker([meter.GPS.Latitude, meter.GPS.Longitude], { icon: markerIcon })
+						.bindTooltip(tooltip)
+						.openTooltip();
 		}
 	});
 
