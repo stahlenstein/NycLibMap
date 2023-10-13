@@ -23,7 +23,9 @@
 			var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution:
 					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			}).addTo(map);
+			})
+			
+			osmLayer.addTo(map);
 
 			map.createPane('pane_Limits');
 
@@ -39,7 +41,10 @@
 							iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
 							
 						});
-						return L.marker(latlng, { icon: myIcon });
+						return L.marker(latlng, { icon: myIcon })
+						.bindTooltip(feature.properties.name, {
+							offset: [13,0]
+						}).openTooltip();
 					}
 
 					// create an options object that specifies which function will called on each feature
