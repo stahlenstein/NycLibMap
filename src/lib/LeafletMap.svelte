@@ -45,12 +45,17 @@
 				});
 
 				fetch(
-				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Library.geojson'
+				'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson'
 			)
 				.then(response => response.json())
 				.then(data => {
 					L.geoJSON(data).addTo(map);
 				});
+
+				const markerIcon = L.icon({
+						iconUrl: `https://raw.githubusercontent.com/Main-FCWD/FloydWebMap/main/static/Data/markers/rt${GPSRoute}.svg`,
+						iconSize: [25, 25] // Adjust the size according to your marker images
+					});
 		}
 	});
 
