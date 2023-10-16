@@ -5,12 +5,18 @@
 
 	let mapElement;
 	let map;
-	var libData ='https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
-	var iconSASB = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/SASB.png';
-	var iconLPA = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/LPA.png';
-	var iconSchomberg = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Schomburg.png';
-	var iconBranch = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch.png';
-	var iconBranchLine = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch_line.png';
+	var libData =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
+	var iconSASB =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/SASB.png';
+	var iconLPA =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/LPA.png';
+	var iconSchomberg =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Schomburg.png';
+	var iconBranch =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch.png';
+	var iconBranchLine =
+		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch_line.png';
 
 	onMount(async () => {
 		if (browser) {
@@ -21,13 +27,21 @@
 				[40.753322, -73.982544],
 				11
 			);
+			var Esri_WorldTopoMap = L.tileLayer(
+				'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
+				{
+					attribution:
+						'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+				}
+			);
 
 			var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution:
 					'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-			})
-			
-			osmLayer.addTo(map);
+			});
+
+			// osmLayer.addTo(map);
+			Esri_WorldTopoMap.addTo(map);
 
 			map.createPane('pane_Limits');
 
@@ -36,52 +50,67 @@
 				.then((response) => response.json())
 				.then((data) => {
 					//replace Leaflet's default blue marker with a custom icon
+					
 					function addLibIcon(feature, latlng) {
-						let myIcon = L.icon({
-							iconUrl: iconBranchLine,
-							iconSize: [32, 32], // width and height of the image in pixels
-							iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-						});
-
-						return L.marker(latlng, { icon: myIcon })
-						.bindTooltip(feature.properties.name, {
-							offset: [19,0]
-						}).openTooltip();
+						let markerIcon;
+						if ((feature.properties.name === 'Stephen A. Schwarzman Building')) {
+							var SASBIcon = L.icon({
+								iconSize: [20, 20],
+								iconAnchor: [20, 20],
+								iconUrl: iconSASB
+							});
+							return L.marker(latlng, { icon: SASBIcon })
+								.bindTooltip(feature.properties.name, {
+									offset: [19, 0]
+								})
+								.openTooltip();
+						}
+						if (
+							(feature.properties.name ===
+								'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center')
+						) {
+							var LPAIcon = L.icon({
+								iconSize: [20, 20],
+								iconAnchor: [20, 20],
+								iconUrl: iconLPA
+							});
+							return L.marker(latlng, { icon: LPAIcon })
+								.bindTooltip(feature.properties.name, {
+									offset: [19, 0]
+								})
+								.openTooltip();
+						}
+						if ((feature.properties.name === 'Schomburg Center for Research in Black Culture')) {
+							var SchomburgIcon = L.icon({
+								iconSize: [20, 20],
+								iconAnchor: [20, 20],
+								iconUrl: iconSchomberg
+							});
+							return L.marker(latlng, { icon: SchomburgIcon })
+								.bindTooltip(feature.properties.name, {
+									offset: [19, 0]
+								})
+								.openTooltip();
+						} else {
+							var BranchLineIcon = L.icon({
+								iconSize: [20, 20],
+								iconAnchor: [20, 20],
+								iconUrl: iconBranchLine
+							});
+							return L.marker(latlng, { icon: BranchLineIcon })
+								.bindTooltip(feature.properties.name, {
+									offset: [19, 0]
+								})
+								.openTooltip();
+						}
 					}
-
-					// function addLibIcon(feature, latlng) {
-					// 	let markerIcon;
-					// 	if (feature.properties.name = 'Stephen A. Schwarzman Building') {
-					// 		markerIcon = iconSASB;
-					// 	}
-					// 	if (feature.properties.name = 'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center') {
-					// 		markerIcon = iconLPA;
-					// 	}
-					// 	if (feature.properties.name = 'Schomburg Center for Research in Black Culture') {
-					// 		markerIcon = iconSchomberg;
-					// 	}
-					// 	else {
-					// 		markerIcon = iconBranch
-					// 	}
-					// 	let myIcon = L.Icon({
-					// 		iconUrl: markerIcon,
-					// 		iconSize: [32,32],
-					// 		iconAnchor: [12,12]
-					// 	});
-					
-					// 	return L.marker(latlng, { icon: myIcon })
-					// 	.bindTooltip(feature.properties.name, {
-					// 		offset: [19,0]
-					// 	}).openTooltip();
-					// }
-					
 
 					// create an options object that specifies which function will called on each feature
 					let layerOptions = {
 						pointToLayer: addLibIcon
 					};
 
-					L.geoJSON(data, layerOptions)
+					var siteData = L.geoJSON(data, layerOptions)
 						.bindPopup(function (osmLayer) {
 							return osmLayer.feature.properties.name;
 						})
