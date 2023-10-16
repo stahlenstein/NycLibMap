@@ -27,6 +27,7 @@
 				"x": "1002287.604",
 				"city": "New York",
 				"name": "125th Street",
+				"status": "Closed",
 				"system": "NYPL",
 				"zip": "10035",
 				"url": "http://www.nypl.org/locations/125th-street",

@@ -53,8 +53,6 @@
 				.then((data) => {
 					//replace Leaflet's default blue marker with a custom icon
 
-					
-		
 					function addLibIcon(feature, latlng) {
 						if (feature.properties.name === 'Stephen A. Schwarzman Building') {
 							var SASBIcon = L.icon({
@@ -67,9 +65,7 @@
 									offset: [19, 0]
 								})
 								.openTooltip();
-								return(marker);
-
-								
+							return marker;
 						}
 						if (
 							feature.properties.name ===
@@ -85,7 +81,7 @@
 									offset: [19, 0]
 								})
 								.openTooltip();
-								return(marker);
+							return marker;
 						}
 						if (feature.properties.name === 'Schomburg Center for Research in Black Culture') {
 							var SchomburgIcon = L.icon({
@@ -98,7 +94,7 @@
 									offset: [19, 0]
 								})
 								.openTooltip();
-								return(marker);
+							return marker;
 						} else {
 							var BranchLineIcon = L.icon({
 								iconSize: [20, 20],
@@ -110,22 +106,24 @@
 									offset: [19, 0]
 								})
 								.openTooltip();
-								return(marker);
+							return marker;
 						}
-
 					}
-
-
 
 					// create an options object that specifies which function will called on each feature
 					let layerOptions = {
-						pointToLayer: addLibIcon
+						pointToLayer: addLibIcon,
+						onEachFeature: function (feature, layer) {
+							layer.bindPopup(
+								'<h1>' + feature.properties.name + '</h1><p>system: ' + feature.properties.system + '</p>' + '<p>status: ' + feature.properties.status + '<p>'
+							);
+						}
 					};
 
 					L.geoJSON(data, layerOptions)
-						.bindPopup(function (osmLayer) {
-							return osmLayer.feature.properties.name;
-						})
+						// .bindPopup(function (d) {
+						// 	return d.feature.properties.name;
+						// })
 						.addTo(map);
 					console.log(data);
 				});
