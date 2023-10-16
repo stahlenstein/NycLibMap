@@ -5,6 +5,7 @@
 
 	let mapElement;
 	let map;
+	let L;
 	var libData =
 		'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/Data/Libraries.geojson';
 	var iconSASB =
@@ -21,7 +22,8 @@
 	onMount(async () => {
 		if (browser) {
 			// add await imports //
-			const L = await import('leaflet');
+			L = await import('leaflet');
+			await import('leaflet.markercluster');
 
 			map = L.map(mapElement, { zoomControl: true, maxZoom: 18, minZoom: 11 }).setView(
 				[40.753322, -73.982544],
@@ -50,67 +52,77 @@
 				.then((response) => response.json())
 				.then((data) => {
 					//replace Leaflet's default blue marker with a custom icon
+
 					
+		
 					function addLibIcon(feature, latlng) {
-						let markerIcon;
-						if ((feature.properties.name === 'Stephen A. Schwarzman Building')) {
+						if (feature.properties.name === 'Stephen A. Schwarzman Building') {
 							var SASBIcon = L.icon({
-								iconSize: [20, 20],
+								iconSize: [25, 23],
 								iconAnchor: [20, 20],
 								iconUrl: iconSASB
 							});
-							return L.marker(latlng, { icon: SASBIcon })
+							var marker = new L.marker(latlng, { icon: SASBIcon })
 								.bindTooltip(feature.properties.name, {
 									offset: [19, 0]
 								})
 								.openTooltip();
+								return(marker);
+
+								
 						}
 						if (
-							(feature.properties.name ===
-								'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center')
+							feature.properties.name ===
+							'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center'
 						) {
 							var LPAIcon = L.icon({
-								iconSize: [20, 20],
+								iconSize: [25, 23],
 								iconAnchor: [20, 20],
 								iconUrl: iconLPA
 							});
-							return L.marker(latlng, { icon: LPAIcon })
+							var marker = new L.marker(latlng, { icon: LPAIcon })
 								.bindTooltip(feature.properties.name, {
 									offset: [19, 0]
 								})
 								.openTooltip();
+								return(marker);
 						}
-						if ((feature.properties.name === 'Schomburg Center for Research in Black Culture')) {
+						if (feature.properties.name === 'Schomburg Center for Research in Black Culture') {
 							var SchomburgIcon = L.icon({
-								iconSize: [20, 20],
+								iconSize: [25, 23],
 								iconAnchor: [20, 20],
 								iconUrl: iconSchomberg
 							});
-							return L.marker(latlng, { icon: SchomburgIcon })
+							var marker = new L.marker(latlng, { icon: SchomburgIcon })
 								.bindTooltip(feature.properties.name, {
 									offset: [19, 0]
 								})
 								.openTooltip();
+								return(marker);
 						} else {
 							var BranchLineIcon = L.icon({
 								iconSize: [20, 20],
 								iconAnchor: [20, 20],
 								iconUrl: iconBranchLine
 							});
-							return L.marker(latlng, { icon: BranchLineIcon })
+							var marker = new L.marker(latlng, { icon: BranchLineIcon })
 								.bindTooltip(feature.properties.name, {
 									offset: [19, 0]
 								})
 								.openTooltip();
+								return(marker);
 						}
+
 					}
+
+
 
 					// create an options object that specifies which function will called on each feature
 					let layerOptions = {
 						pointToLayer: addLibIcon
 					};
 
-					var siteData = L.geoJSON(data, layerOptions)
+					L.geoJSON(data, layerOptions)
 						.bindPopup(function (osmLayer) {
 							return osmLayer.feature.properties.name;
 						})
