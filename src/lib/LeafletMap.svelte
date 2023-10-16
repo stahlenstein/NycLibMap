@@ -10,6 +10,7 @@
 	var iconLPA = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/LPA.png';
 	var iconSchomberg = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Schomburg.png';
 	var iconBranch = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch.png';
+	var iconBranchLine = 'https://raw.githubusercontent.com/stahlenstein/NycLibMap/master/static/icons/Branch_line.png';
 
 	onMount(async () => {
 		if (browser) {
@@ -34,45 +35,45 @@
 			fetch(libData)
 				.then((response) => response.json())
 				.then((data) => {
-					// replace Leaflet's default blue marker with a custom icon
-					// function addLibIcon(feature, latlng) {
-					// 	let myIcon = L.icon({
-					// 		iconUrl: iconBranch,
-					// 		iconSize: [32, 32], // width and height of the image in pixels
-					// 		iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
-							
-					// 	});
-					// 	return L.marker(latlng, { icon: myIcon })
-					// 	.bindTooltip(feature.properties.name, {
-					// 		offset: [19,0]
-					// 	}).openTooltip();
-					// }
-
+					//replace Leaflet's default blue marker with a custom icon
 					function addLibIcon(feature, latlng) {
-						let markerIcon;
-						if (feature.properties.name = 'Stephen A. Schwarzman Building') {
-							markerIcon = iconSASB;
-						}
-						if (feature.properties.name = 'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center') {
-							markerIcon = iconLPA;
-						}
-						if (feature.properties.name = 'Schomburg Center for Research in Black Culture') {
-							markerIcon = iconSchomberg;
-						}
-						else {
-							markerIcon = iconBranch
-						}
-						let myIcon = L.Icon({
-							iconUrl: markerIcon,
-							iconSize: [32,32],
-							iconAnchor: [12,12]
+						let myIcon = L.icon({
+							iconUrl: iconBranchLine,
+							iconSize: [32, 32], // width and height of the image in pixels
+							iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
 						});
-					
+
 						return L.marker(latlng, { icon: myIcon })
 						.bindTooltip(feature.properties.name, {
 							offset: [19,0]
 						}).openTooltip();
 					}
+
+					// function addLibIcon(feature, latlng) {
+					// 	let markerIcon;
+					// 	if (feature.properties.name = 'Stephen A. Schwarzman Building') {
+					// 		markerIcon = iconSASB;
+					// 	}
+					// 	if (feature.properties.name = 'Library for the Performing Arts, Dorothy and Lewis B. Cullman Center') {
+					// 		markerIcon = iconLPA;
+					// 	}
+					// 	if (feature.properties.name = 'Schomburg Center for Research in Black Culture') {
+					// 		markerIcon = iconSchomberg;
+					// 	}
+					// 	else {
+					// 		markerIcon = iconBranch
+					// 	}
+					// 	let myIcon = L.Icon({
+					// 		iconUrl: markerIcon,
+					// 		iconSize: [32,32],
+					// 		iconAnchor: [12,12]
+					// 	});
+					
+					// 	return L.marker(latlng, { icon: myIcon })
+					// 	.bindTooltip(feature.properties.name, {
+					// 		offset: [19,0]
+					// 	}).openTooltip();
+					// }
 					
 
 					// create an options object that specifies which function will called on each feature
