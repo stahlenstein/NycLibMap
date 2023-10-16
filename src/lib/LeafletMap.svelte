@@ -115,7 +115,7 @@
 						pointToLayer: addLibIcon,
 						onEachFeature: function (feature, layer) {
 							layer.bindPopup(
-								'<h1>' + feature.properties.name + '</h1><p>system: ' + feature.properties.system + '</p>' + '<p>status: ' + feature.properties.status + '<p>'
+								'<h1>' + feature.properties.name + '</h1><p>system: ' + feature.properties.system + '</p>' + '<p>status: ' + feature.properties.status + '</p>' + '<p>url: ' + feature.properties.url + '</p>' 
 							);
 						}
 					};
