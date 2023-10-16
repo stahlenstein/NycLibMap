@@ -23,7 +23,6 @@
 		if (browser) {
 			// add await imports //
 			L = await import('leaflet');
-			await import('leaflet.markercluster');
 
 			map = L.map(mapElement, { zoomControl: true, maxZoom: 18, minZoom: 11 }).setView(
 				[40.753322, -73.982544],
