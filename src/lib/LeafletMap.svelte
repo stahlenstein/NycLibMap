@@ -23,7 +23,7 @@
 		if (browser) {
 			// add await imports //
 			L = await import('leaflet');
-			await import('static/Plugins/leaflet-indoor/leaflet-indoor.js');
+			await import('static/js/leaflet-indoor.js');
 
 			map = L.map(mapElement, { zoomControl: true, maxZoom: 22, minZoom: 11 }).setView(
 				[40.753322, -73.982544],
