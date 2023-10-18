@@ -122,6 +122,11 @@
 									'</h1><p>system: ' +
 									feature.properties.system +
 									'</p>' +
+									'<p>network: ' +
+									feature.properties.network +
+									'</p>' +
+									'<p>code: ' +
+									feature.properties.code +
 									'<p>status: ' +
 									feature.properties.status +
 									'</p>' +
